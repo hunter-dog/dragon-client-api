@@ -1,0 +1,32 @@
+server:
+  port: 8087
+spring:
+  datasource:
+#    url: jdbc:postgresql://localhost:5432/dragon
+    url: jdbc:postgresql://ec2-54-180-154-233.ap-northeast-2.compute.amazonaws.com:5432/dragon
+    username: csw
+    password: sksnzm62
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  sql:
+    init:
+      platform: postgres
+app:
+  cors:
+    allowedOrigins: http://dragonneolike.com
+# todo 240313: 프로필 새로 파라
+#    allowedOrigins: http://localhost:5173
+cloud:
+  aws:
+    s3:
+      bucket: emusonbucket
+    credentials:
+      access-key: AKIAUP625AXSLWSTTUOZ
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
