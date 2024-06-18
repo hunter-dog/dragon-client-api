@@ -3,6 +3,7 @@ package com.dragan.emuson.exception;
 import com.dragan.emuson.common.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +27,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Response> handleBadRequestException(BadRequestException bre) {
         log.error("bad request exception - {}", bre.getMessage());
+
+        Response response = Response.ofError(BAD_REQUEST.value(), bre.getMessage(), null, bre.getClass().getSimpleName());
+        return new ResponseEntity<>(response, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Response> handleBadCredentialsException(BadCredentialsException bre) {
+        log.error("wrong id or password - {}", bre.getMessage());
 
         Response response = Response.ofError(BAD_REQUEST.value(), bre.getMessage(), null, bre.getClass().getSimpleName());
         return new ResponseEntity<>(response, BAD_REQUEST);
