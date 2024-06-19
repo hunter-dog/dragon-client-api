@@ -26,7 +26,8 @@ public class MyPageRepository {
     public void updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) {
         queryFactory.update(member)
                 .set(member.name, profileUpdateRequest.getName())
-                .set(member.email,profileUpdateRequest.getEmail())
+//                .set(member.email,profileUpdateRequest.getEmail())
+                .set(member.imageUrl, profileUpdateRequest.getProfileImgUrl())
                 .where(member.id.eq(userId))
                 .execute();
     }

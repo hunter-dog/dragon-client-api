@@ -10,5 +10,6 @@ public class MemberResponse {
 
     private String name;
     private String email;
+    private String profileImgUrl;
 
 }

@@ -13,11 +13,13 @@ public class SignUpRequest {
     private String name;
 
     @NotBlank
-    @Email
     private String email;
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String imageUrl;
 
     public String getName() {
         return name;
@@ -41,5 +43,13 @@ public class SignUpRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

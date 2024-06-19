@@ -21,6 +21,7 @@ public class MyPageService {
         return MemberResponse.builder()
                 .name(member.getName())
                 .email(member.getEmail())
+                .profileImgUrl(member.getImageUrl())
                 .build();
     }
 
