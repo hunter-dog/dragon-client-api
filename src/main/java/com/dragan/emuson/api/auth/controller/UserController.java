@@ -27,6 +27,7 @@ public class UserController {
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
         userDTO.setRole("USER");
+        userDTO.setProfileImgUrl(user.getImageUrl());
 
         return userDTO;
     }
