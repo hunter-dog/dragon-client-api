@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -284,6 +285,10 @@ public class DragonLakeService {
         Long targetId = updateLieksRequest.getId();
         Boolean isLike = updateLieksRequest.getIsLike();
 
+        if (!StringUtils.isEmpty(updateLieksRequest.getIp())) {
+            clientIp = updateLieksRequest.getIp();
+        }
+
         LikeHistory likeHistory = dragonLakeRepository.findLikeHistoryByIp(clientIp, updateLieksRequest.getIsLike());
 
         if (likeHistory != null) {
@@ -296,7 +301,7 @@ public class DragonLakeService {
             }
 
             if (idList.contains(targetId)) {
-                throw new BadRequestException("추천/비추천은 하루에 한 번만 가능합니다.");
+                throw new BadRequestException("1개의 게시물에 추천/비추천은 하루에 한 번만 가능합니다.");
             }
 
             idList.add(targetId);

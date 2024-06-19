@@ -3,6 +3,8 @@ package com.dragan.emuson.api.dragonlake.controller;
 import com.dragan.emuson.api.dragonlake.dto.*;
 import com.dragan.emuson.api.dragonlake.service.DragonLakeService;
 import com.dragan.emuson.common.Response;
+import com.dragan.emuson.security.CurrentUser;
+import com.dragan.emuson.security.UserPrincipal;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -65,7 +67,7 @@ public class DragonLakeController {
     @PostMapping("/yongeic/save")
     public Response saveYongeic(@Validated @RequestBody YongeicSaveRequest yongeicSaveRequest) {
         dragonLakeService.saveExam(yongeicSaveRequest);
-        return Response.ofSuccess("정상적으로 저장 되었습니다. (관리자 승인 후 사용 가능)", null);
+        return Response.ofSuccess("정상적으로 저장 되었습니다.", null);
     }
 
     @GetMapping("/yongeic/list")
@@ -85,25 +87,37 @@ public class DragonLakeController {
     }
 
     @PostMapping("/yongniverse/add/likes")
-    public Response addLikesOfYongniverse(@RequestBody UpdateLieksRequest updateLieksRequest, HttpServletRequest request) {
+    public Response addLikesOfYongniverse(@CurrentUser UserPrincipal userPrincipal, @RequestBody UpdateLieksRequest updateLieksRequest, HttpServletRequest request) {
+        if (userPrincipal != null) {
+            updateLieksRequest.setIp(userPrincipal.getEmail());
+        }
         dragonLakeService.updateLikesHistory(updateLieksRequest, request);
         return Response.ofSuccess(dragonLakeService.addLikesOfYongniverse(updateLieksRequest));
     }
 
     @PostMapping("/yongniverse/add/dislikes")
-    public Response addDislikesOfYongniverse(@RequestBody UpdateLieksRequest updateLieksRequest, HttpServletRequest request) {
+    public Response addDislikesOfYongniverse(@CurrentUser UserPrincipal userPrincipal, @RequestBody UpdateLieksRequest updateLieksRequest, HttpServletRequest request) {
+        if (userPrincipal != null) {
+            updateLieksRequest.setIp(userPrincipal.getEmail());
+        }
         dragonLakeService.updateLikesHistory(updateLieksRequest, request);
         return Response.ofSuccess(dragonLakeService.addDislikesOfYongniverse(updateLieksRequest));
     }
 
     @PostMapping("/board/guest/book/add/likes")
-    public Response addLikesOfGuestBook(@RequestBody UpdateLieksRequest updateLieksRequest, HttpServletRequest request) {
+    public Response addLikesOfGuestBook(@CurrentUser UserPrincipal userPrincipal, @RequestBody UpdateLieksRequest updateLieksRequest, HttpServletRequest request) {
+        if (userPrincipal != null) {
+            updateLieksRequest.setIp(userPrincipal.getEmail());
+        }
         dragonLakeService.updateLikesHistory(updateLieksRequest, request);
         return Response.ofSuccess(dragonLakeService.addLikesOfGuestBook(updateLieksRequest));
     }
 
     @PostMapping("/board/guest/book/add/dislikes")
-    public Response addDislikesOfGuestBook(@RequestBody UpdateLieksRequest updateLieksRequest, HttpServletRequest request) {
+    public Response addDislikesOfGuestBook(@CurrentUser UserPrincipal userPrincipal, @RequestBody UpdateLieksRequest updateLieksRequest, HttpServletRequest request) {
+        if (userPrincipal != null) {
+            updateLieksRequest.setIp(userPrincipal.getEmail());
+        }
         dragonLakeService.updateLikesHistory(updateLieksRequest, request);
         return Response.ofSuccess(dragonLakeService.addDislikesOfGuestBook(updateLieksRequest));
     }
@@ -120,8 +134,13 @@ public class DragonLakeController {
     }
 
     @PostMapping("/board/guest/book/write/comment")
-    public Response writeCommentInGuestBook(@Validated @RequestBody GuestBookCommentRequest guestBookCommentRequest, HttpServletRequest request) {
-        guestBookCommentRequest.setIp(request.getRemoteAddr());
+    public Response writeCommentInGuestBook(@Validated @RequestBody GuestBookCommentRequest guestBookCommentRequest,
+                                            HttpServletRequest request,
+                                            @CurrentUser UserPrincipal userPrincipal) {
+
+        if (userPrincipal == null) {
+            guestBookCommentRequest.setIp(request.getRemoteAddr());
+        }
 
         if (guestBookCommentRequest.getParentId() == null)  {
             dragonLakeService.writeCommentInGuestBook(guestBookCommentRequest);
