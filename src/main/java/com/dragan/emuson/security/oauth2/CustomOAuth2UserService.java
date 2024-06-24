@@ -74,8 +74,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        existingUser.setName(oAuth2UserInfo.getName());
-        existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
+        // csw-memo 240625: Oauth로 로그인 할 때마다 이름과 프로필url 변경되는 거 방지하기 위해 주석처리
+//        existingUser.setName(oAuth2UserInfo.getName());
+//        existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(existingUser);
     }
 

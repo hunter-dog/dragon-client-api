@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Email;
 import lombok.Getter;
 
 @Entity
-@Table(name = "member")
 @Getter
 public class Member {
 
